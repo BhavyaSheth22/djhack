@@ -6,6 +6,10 @@ __pycache__/
 # C extensions
 *.so
 
+
+djhack-bot-rhpuqt-97f737c76680.json
+djhack-bot-rhpuqt-6e9e16039621.json
+djhack-bot-rhpuqt-1d46ac2bc724.json
 # Distribution / packaging
 .Python
 build/
@@ -103,6 +107,7 @@ celerybeat.pid
 
 # Environments
 .env
+.flaskenv
 .venv
 env/
 venv/
