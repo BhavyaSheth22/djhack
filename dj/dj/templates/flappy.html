@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="1894.2">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 14.0px; font: 12.0px Helvetica; color: #000000; -webkit-text-stroke: #000000}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 14.0px; font: 12.0px Helvetica; color: #000000; -webkit-text-stroke: #000000; min-height: 14.0px}
+    span.s1 {font-kerning: none}
+    span.Apple-tab-span {white-space:pre}
+  </style>
+</head>
+<body>
+<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
+<p class="p1"><span class="s1">&lt;html&gt;</span></p>
+<p class="p1"><span class="s1">&lt;head&gt;</span></p>
+<p class="p1"><span class="s1">&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"/&gt;</span></p>
+<p class="p1"><span class="s1">&lt;style&gt;</span></p>
+<p class="p1"><span class="s1">canvas {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>border:1px solid #d3d3d3;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>background-color: #f1f1f1;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">&lt;/style&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
+<p class="p1"><span class="s1">&lt;body onload="startGame()"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;script&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">var GamePiece;</span></p>
+<p class="p1"><span class="s1">var Obstacles = [];</span></p>
+<p class="p1"><span class="s1">var Score;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">function startGame() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>GamePiece = new component(30, 30, "rgba(120,0,155,1)", 10, 120);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>GamePiece.gravity = 0.9;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Score = new component("30px", "Arial", "black", 280, 40, "text");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>GameArea.start();</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">var GameArea = {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>canvas : document.createElement("canvas"),</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>start : function() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>this.canvas.width = 480;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>this.canvas.height = 270;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>this.context = this.canvas.getContext("2d");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.body.insertBefore(this.canvas, document.body.childNodes[0]);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>this.frameNo = 0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>this.interval = setInterval(updateGameArea, 15);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>clear : function() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">function component(width, height, color, x, y, type) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>this.type = type;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>this.score = 0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>this.width = width;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>this.height = height;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>this.speedX = 0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>this.speedY = 0; <span class="Apple-converted-space">   </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>this.x = x;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>this.y = y;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>this.gravity = 0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>this.gravitySpeed = 0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>this.update = function() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>ctx = GameArea.context;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if (this.type == "text") {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>ctx.font = this.width + " " + this.height;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>ctx.fillStyle = color;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>ctx.fillText(this.text, this.x, this.y);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>} else {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>ctx.fillStyle = color;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>ctx.fillRect(this.x, this.y, this.width, this.height);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>this.newPos = function() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>this.gravitySpeed += this.gravity;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>this.x += this.speedX;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>this.y += this.speedY + this.gravitySpeed;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>this.hitBottom();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>this.hittop();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>this.hittop = function() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>var top = GameArea.canvas.height;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if (this.y &gt; top) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        <span class="Apple-tab-span">	</span></span>this.y=GameArea.canvas.height-120;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>this.gravitySpeed = 8.5;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>this.hitBottom = function() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>var rockbottom = GameArea.canvas.height - this.height;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if (this.y &gt; rockbottom) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>this.y = rockbottom;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>this.gravitySpeed = 0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>this.crashWith = function(otherobj) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>var myleft = this.x;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>var myright = this.x + (this.width);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>var mytop = this.y;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>var mybottom = this.y + (this.height);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>var otherleft = otherobj.x;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>var otherright = otherobj.x + (otherobj.width);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>var othertop = otherobj.y;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>var otherbottom = otherobj.y + (otherobj.height);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>var crash = true;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if ((mybottom &lt; othertop) || (mytop &gt; otherbottom) || (myright &lt; otherleft) || (myleft &gt; otherright)) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>crash = false;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>return crash;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">function updateGameArea() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>var x, height, gap, minHeight, maxHeight, minGap, maxGap;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>for (i = 0; i &lt; Obstacles.length; i += 1) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if (GamePiece.crashWith(Obstacles[i])) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>return;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>GameArea.clear();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>GameArea.frameNo += 1;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if (GameArea.frameNo == 1 || everyinterval(150)) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>x = GameArea.canvas.width;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>minHeight = 20;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>maxHeight = 200;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>height = Math.floor(Math.random()*(maxHeight-minHeight+1)+minHeight);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>minGap = 50;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>maxGap = 200;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>gap = Math.floor(Math.random()*(maxGap-minGap+1)+minGap);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>Obstacles.push(new component(10, height, "gold", x, 0));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>Obstacles.push(new component(10, x - height - gap, "gold", x, height + gap));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>for (i = 0; i &lt; Obstacles.length; i += 1) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>Obstacles[i].x += -1;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>Obstacles[i].update();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Score.text="SCORE: " + GameArea.frameNo;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>Score.update();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>GamePiece.newPos();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>GamePiece.update();</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">function everyinterval(n) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if ((GameArea.frameNo / n) % 1 == 0) {return true;}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>return false;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">function accelerate(n) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>GamePiece.gravity = n;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1">&lt;br&gt;</span></p>
+<p class="p1"><span class="s1">&lt;button onmousedown="accelerate(-0.6)" onmouseup="accelerate(1.4)"&gt;ACCELERATE&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1">&lt;button onmouseup="location.reload()"&gt;RESET&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;Accelerate to Stay in air&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;p&gt;Reset to try again&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
+</body>
+</html>
